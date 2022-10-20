@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+<meta charset="ISO-8859-1">
+<title>Cozy Cuppa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Forum&family=Work+Sans:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+	<div class="homeContainer">
+	  	<video autoplay muted loop id="myVideo">
+        	<source th:src="@{/media/homeVid.mp4}" type="video/mp4">
+    	</video>
+    	<div class="holder">
+		<aside class="welcome">
+			<h1>Cozy Cuppa</h1>
+			<p>Share your favorite warm drink. explore warm drinks from around the world and find the perfect toasty treat to warm you on the coldest of days. </p>
+			<div class=buttonholder>
+				<a th:href="@{/login}">
+					<button class="btn">Login</button>
+				</a>
+				<a th:href="@{/signUp}">
+					<button class="btn">Sign Up</button>
+				</a>
+			</div>
+		</aside>
+		</div>
+	</div>
+
+</body>
+</html>

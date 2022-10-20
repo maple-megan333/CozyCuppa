@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: commonHeader" />
+<body class="drinkBg"
+	th:style="'background-image:url(' + ${drink.drinkImg} + ');'">
+	<div class="bgOverlaylight">
+		<nav th:replace="common/navbar :: commonNavbar" />
+		<div class="drinkContainer">
+			<aside class="letInMoreLight">
+				<h4>Published By:</h4>
+				<div class="profileHeaderWrapper">
+					<div th:class="profileHeader"
+						th:style="'background-image:url(' + ${author.profilePhoto} + ');'">
+						<div class="bannerOverlay">
+							<h3 th:text="${author.userName}"></h3>
+						</div>
+					</div>
+				</div>
+				<h4>Wants To Try:</h4>
+				<div th:if="${#lists.isEmpty(wants)}">
+					<p>No One has added this to their list of things to try yet!
+						Maybe you should be the first</p>
+				</div>
+				<div th:unless="${#lists.isEmpty(wants)}">
+					<div th:each="User : ${wants}">
+						<a th:href="@{'/users/' + '${User.userId}'}"> <span
+							class="circle-image"> <img
+								th:src="@{${User.profilePhoto}}" />
+						</span>
+						</a>
+						<p th:text="${User.userName}"></p>
+					</div>
+				</div>
+				<div>
+					<h4>Has Tried:</h4>
+					<div th:if="${#lists.isEmpty(has)}">
+						<p>No One has Tried this drink yet!</p>
+					</div>
+					<div th:unless="${#lists.isEmpty(has)}">
+						<div th:each="User : ${has}">
+							<a th:href="@{'/users/' + '${User.userId}'}"> <span
+								class="circle-image"> <img
+									th:src="@{${User.profilePhoto}}" />
+							</span>
+							</a>
+							<p th:text="${User.userName}"></p>
+						</div>
+					</div>
+					<div class="buttonholder">
+						<button class="btn drkFont">Try</button>
+						<button class="btn drkFont">Have Tried</button>
+					</div>
+			</aside>
+			<article class=" drinkBig">
+				<div class="drinkPageTitle">
+					<h2 th:text="${drink.drinkName}"></h2>
+					<div th:unless="${#lists.isEmpty(thisDrinksRevs)}">
+						<p>
+							Drink Rating: <span th:inline="text">[[${#numbers.formatDecimal(drinkAvg,
+								0, 'COMMA', 1, 'POINT')}]] </span>/5.0
+						</p>
+					</div>
+				</div>
+				<div class=" letThereBeDark drinkContent">
+
+					<div class="drinkIntro">
+						<img th:src="@{${drink.DrinkImg}}">
+						<p th:text="${drink.drinkNotes}"></p>
+					</div>
+					<div th:unless="${#lists.isEmpty(drink.drinkType)}">
+						<h4>Categories</h4>
+						<div class="saveSpace">
+							<p th:each="DrinkType : ${drink.drinkType}">
+								<span th:text="${DrinkType.drinkTypeName}"> </span>
+							</p>
+						</div>
+					</div>
+					<h3>Ingredients</h3>
+					<p class="extraSpace" th:each="Ingredient : ${drink.ingredients}">
+						<span th:text="${Ingredient.ingredient}"></span>
+					</p>
+					<h3>Instructions:</h3>
+					<ol>
+						<li th:each="Instruction: ${drink.instructions}"
+							th:text="${Instruction.step_instruction}"></li>
+					</ol>
+					<h3>Additional Notes:</h3>
+					<p class="extraSpace" th:text=${drink.makingNotes}></p>
+				</div>
+
+				<div class="drinkForms">
+					<div class=" letThereBeDark ratingForm">
+						<form class="" name="drinkRatingForm" th:object="${reviewMods}"
+							method="post">
+							<h3>Review this drink!</h3>
+							<ul>
+								<li><label id="option1">1</label> <input type="radio"
+									th:field="*{rating}" th:value="1" id="option1" /></li>
+								<li><label id="option2">2</label> <input type="radio"
+									th:field="*{rating}" th:value="2" id="option2" /></li>
+								<li><label id="option3">3</label> <input type="radio"
+									th:field="*{rating}" th:value="3" id="option3" /></li>
+								<li><label id="option4">4</label> <input type="radio"
+									th:field="*{rating}" th:value="4" id="option4" /></li>
+								<li><label id="option5">5</label> <input type="radio"
+									th:field="*{rating}" th:value="5" id="option5" /></li>
+							</ul>
+							<div class="sendRight">
+								<button class="btn" type="submit" name="submitRating">Submit
+									Rating</button>
+							</div>
+						</form>
+
+
+					</div>
+
+					<div class="commentForm letInMoreLight">
+						<h3>Leave a Comment</h3>
+						<form class="" name="commentForm" th:object="${newComment}"
+							method="post">
+							<input type="text" th:field="*{commentText}"
+								placeholder="Write your thoughts Here!" />
+							<div class="sendRight">
+								<button type="submit" class="btn drkFont" name="submitComment">Submit
+									Comment</button>
+							</div>
+						</form>
+					</div>
+				</div>
+
+				<div>
+					<div class="letInMoreLight" th:if="${#lists.isEmpty(comments)}">
+						<p>There are currently no comments for this cozy cuppa! Start
+							the conversation!</p>
+					</div>
+					<div th:unless="${#lists.isEmpty(comments)}">
+						<div class="commentBox" th:each="comment :${comments}">
+							<div class="userHolder"
+								th:each="user: ${comment.commentAuthorId}">
+								<div class="userPhotoWrapper">
+									<div th:class="userPhoto" th:style="'background-image:url(' + ${comment.commentAuthorId.profilePhoto} + ');'"></div>
+								</div>
+								<p th:text="${comment.commentAuthorId.userName}"></p>
+							</div>
+							<div class="commentText">
+								<div class="sendRight">
+									<!-- <p th:text="${#dates.format(comment.commentDate, 'dd/MM/yyyy')}"></p> -->
+									<p th:text="${#temporals.format(comment.commentDate, 'dd MMMM yyyy')}"></p>
+								</div>
+								<p th:text="${comment.commentText}"></p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</article>
+		</div>
+	</div>
+</body>
+</html>

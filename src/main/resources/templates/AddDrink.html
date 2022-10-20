@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: commonHeader" />
+<body class="wood">
+	<div class="bgOverlay">
+		<nav th:replace="common/navbar :: commonNavbar" />
+		<div class=makeItCenter>
+		<div class="groupForm letThereBeLight">
+			<h2>Create a Cozy Cup!</h2>
+			
+			<form  class="userform" name="addDrinkForm" action="#" th:action="@{/drinks/AddDrink}" th:object="${adddrink}" method="post"  enctype="multipart/form-data">
+				<div class="formCol">
+					<input type="text" th:field="*{name}" name="name" placeholder="Name"/>
+					<label for="drinkNotes" class="form-label">Drink Notes:</label>
+					<textarea id="drinkNotes" th:field="*{drinkNotes}"></textarea>	
+					<div>
+					<div class="inputShare">
+						<p>Upload a Photo:</p>
+						<input type="file" name="image" id="actual-btn" accept="image/png, image/jpeg" />
+					</div>
+					<p>Country:</p>
+						<select th:field = "*{countryId}">
+							<option value="0">Select Country</option>
+							<option th:each="c : ${countries}" 
+							th:value="${c.countryId}" 
+							th:text="${c.countryName}"></option>
+						</select>
+					</div>
+						<p> Types: </p>
+						 <div class="inpuBoxes">					    
+						        <input type="checkbox" name="types"	
+						        th:each="type : ${alltypes}" 
+						        th:text="${type.drinkTypeName}"				            
+						            th:value="${type.drinkTypeId}"
+						            th:field="*{typeIds}"
+						        /> 
+						   </div>
+						
+						
+				</div>
+				<div class="formCol">
+					<div>
+					<p>Ingredients:</p>
+					<div id="ingredientWrapper">
+						<div th:each="ingredient, stat : *{ingredients}" class="ingredientItem">
+							<input type="text" th:field="*{ingredients[__${stat.index}__]}" />
+						</div>
+					</div>
+					<div class="sendRight">
+					<a  href="#" id="addIngredient"><button class="btn drkFont"  >Add Ingredient</button></a>
+					</div>
+						
+					</div>
+					<div>
+					<p>Instructions:<p>
+						<div id="instructionWrapper">
+							<div th:each="instruction, stat : *{instructions}" class="instructionItem">
+								<input type="text" th:field="*{instructions[__${stat.index}__]}" />
+							</div>
+						</div>
+						<div class="sendRight">
+						<a href="#" id="addInstruction"><button class="btn drkFont" >Add Instruction</button></a>
+						</div>
+						
+					</div>
+					<label for="drinkNotes" class="form-label">Additional Notes:</label>
+					<textarea id="drinkNotes" th:field="*{additionalNotes}"></textarea>
+					<div class="sendRight">
+					<input class="btn drkFont" type="submit" value="Submit" />
+					</div>
+				</div>
+				
+			</form>		
+		</div>
+		</div>
+	</div>
+
+<script type="text/javascript" src="/js/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#addIngredient").click(function(e){
+			e.preventDefault();
+			var ingredientCount = $(".ingredientItem").length;
+			$("#ingredientWrapper").append('<div class="ingredientItem"><input type="text" id="ingredients' + ingredientCount + '" name="ingredients[' + ingredientCount + ']" value=""></div>');
+			return false;	
+		});
+		
+		$("#addInstruction").click(function(e){
+			e.preventDefault();
+			var instructionCount = $(".instructionItem").length;
+			$("#instructionWrapper").append('<div class="instructionItem"><input type="text" id="instructions' + instructionCount + '" name="instructions[' + instructionCount + ']" value=""></div>');
+			return false;	
+		});
+	});
+</script>
+</body>
+</html>

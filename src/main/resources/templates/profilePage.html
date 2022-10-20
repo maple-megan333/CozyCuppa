@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<head th:replace="common/header :: commonHeader" />
+</head>
+<body>
+	<div class="bgOverlay">
+		<nav th:replace="common/navbar :: commonNavbar" />
+		
+		<div class="profileContainer">
+			<aside>
+				<div class="profileHeaderWrapper">
+					<div th:class="profileHeader"
+						th:style="'background-image:url(' + ${user.profilePhoto} + ');'">
+						<div class="bannerOverlay">
+							<h3 th:text="${user.userName}"></h3>
+						</div>
+					</div>
+				</div>
+ 				
+ 				<div class="profileContent">
+				<h3>Country:</h3>
+				<p th:text="${userCountry.countryName}"></p>
+				<h3>Bio:</h3>
+				<p th:text="${user.bio}"></p>
+				<h3>Followers:</h3>
+				<div th:if="${#lists.isEmpty(followedBy)}">
+					<p>This has no followers yet!</p>
+				</div>
+				<div th:unless="${#lists.isEmpty(followedBy)}">
+					<div th:each="User : ${followedBy}">
+						<a th:href="@{'/users/' + '${User.userId}'}">
+						<span class="circle-image">
+						<img th:src="@{${User.profilePhoto}}"/>
+						</span>
+						</a>
+						<p th:text="${User.userName}"></p>
+					</div>
+				</div>
+				<h3>Following:</h3>
+				<div th:if="${#lists.isEmpty(following)}">
+					<p>This user isn't following anyone yet</p>
+				</div>
+				<div th:unless="${#lists.isEmpty(following)}">
+					<div th:each="User : ${following}">
+						<a th:href="@{'/users/' + '${User.userId}'}">
+						<span class="circle-image">
+						<img th:src="@{${User.profilePhoto}}"/>
+						</span>
+						</a>
+						<p th:text="${User.userName}"></p>
+					</div>
+				</div>
+				<button class="btn dark">Follow</button>
+				</div>
+			</aside>
+
+			<section class="mid">
+				<div class="ownSection" th:unless="${#lists.isEmpty(toTry)}">
+					<div th:each="Drink : ${toTry}">
+						<a th:href="@{'/drinks/' + '${Drink.drinkId}'}">
+						<span class="circle-image">
+						<img th:src="@{${Drink.drinkImg}}"/>
+						</span>
+						</a>
+						<p th:text="${Drink.drinkName}"></p>
+					</div>
+				</div>
+				<div class="ownSection" th:unless="${#lists.isEmpty(tried)}">
+					<div th:each="Drink : ${tried}">
+						<a th:href="@{'/drinks/' + '${Drink.drinkId}'}">
+						<span class="circle-image">
+						<img th:src="@{${Drink.drinkImg}}"/>
+						</span>
+						</a>
+						<p th:text="${Drink.drinkName}"></p>
+					</div>
+				</div>
+			</section>
+			<section class="big">
+				<h2>My Drinks</h2>
+				<div th:if="${#lists.isEmpty(drinks)}">
+					<p>Something Special is Brewing!</p>
+				</div>
+				<div th:unless="${#lists.isEmpty(drinks)}">
+					<div th:each="Drink: ${drinks}">
+						<div th:class="teaSample"
+							th:style="'background-image:url(' + ${Drink.drinkImg} + ');'">
+							<a th:href="@{'/drinks/' + '${Drink.drinkId}'}">
+							<div th:class="teaCover">
+								<h3 th:text="${Drink.drinkName}"></h3>
+								<div>
+									<div class="saveSpace">
+										<h4>Country:</h4>
+										<p th:text="${Drink.drinkCountryId.countryName}"></p>
+									</div>
+									<div class="saveSpace">
+										<h4>Date Published:</h4>
+										<p
+											th:text="${#temporals.format(Drink.dateDrinkPublished, 'dd MMMM yyyy')}"></p>
+									</div>
+								</div>
+								<div th:unless="${#lists.isEmpty(Drink.drinkType)}">
+									<h4>Categories</h4>
+									<div class="saveSpace">
+										<p th:each="DrinkType : ${Drink.drinkType}">
+											<span th:text="${DrinkType.drinkTypeName}"> </span>
+										</p>
+									</div>
+								</div>
+							</div>
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+
+</body>
+</html>

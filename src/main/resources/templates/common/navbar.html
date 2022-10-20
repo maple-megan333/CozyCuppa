@@ -1,0 +1,12 @@
+<nav th:fragment="commonNavbar" class="navbar navbar-expand-sm">
+	<ul class="navbar-nav ml-auto">
+		<li class="nav-item"><a id="hereNow" class="nav-link"
+			th:href="@{/userLanding}"> Home </a></li>
+		<li class="nav-item"><a class="nav-link"
+			th:href="@{/findYourCozyCup}"> Explore </a></li>
+		<li class="nav-item"><a class="nav-link" th:href="@{/drinks/AddDrink}">
+				Share </a></li>
+		<li class="nav-item"><a class="nav-link" href="finds.html">
+				Logout </a></li>
+	</ul>
+</nav>

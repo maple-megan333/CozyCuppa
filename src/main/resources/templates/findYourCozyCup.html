@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<meta charset="ISO-8859-1">
+<head th:replace="common/header :: commonHeader" />
+<body class="wood">
+	<div class="bgOverlay">
+		<nav th:replace="common/navbar :: commonNavbar" />
+		<div class="searchBox">
+			<div>
+				<h1>Find your Cozy Cuppa</h1>
+				<div class="searchForm letInMoreLight">
+					<form name='search' id="search" th:action="@{/findYourCozyCup}"
+						th:object="${searchModel}" method="post"
+						enctype="multipart/form-data">
+						<div>
+							<label for="country" class="form-label">Country:</label> <select
+								th:field="*{countryId}">
+								<option value="0">Select Country</option>
+								<option th:each="c : ${countryList}" th:value="${c.countryId}"
+									th:text="${c.countryName}"></option>
+							</select>
+						</div>
+						<div>
+							<label for="types">Types:</label>
+							<div class="inpuBoxes">
+								<input type="checkbox" name="types" th:each="type : ${types}"
+									th:text="${type.drinkTypeName}" th:value="${type.drinkTypeId}"
+									th:field="*{typeIds}" />
+							</div>
+						</div>
+						<div>
+							<input type="submit" class="btn drkFont" name="submitComment" value="Filter Search" />
+						</div>
+					</form>
+				</div>
+				<p>&nbsp;</p>
+				<section class="big">
+					<h2>Search Results</h2>
+					<div th:if="${#lists.isEmpty(drinks)}">
+						<p>Something Special is Brewing!</p>
+					</div>
+					<div th:unless="${#lists.isEmpty(drinks)}">
+						<div th:each="Drink: ${drinks}">
+							<div th:class="teaSample"
+								th:style="'background-image:url(' + ${Drink.drinkImg} + ');'">
+								<a th:href="@{'/drinks/' + ${Drink.drinkId}}">
+									<div th:class="teaCover">
+										<h3 th:text="${Drink.drinkName}"></h3>
+										<div>
+											<div class="saveSpace">
+												<h4>Country:</h4>
+												<p th:text="${Drink.drinkCountryId.countryName}"></p>
+											</div>
+											<div class="saveSpace">
+												<h4>Date Published:</h4>
+												<p
+													th:text="${#temporals.format(Drink.dateDrinkPublished, 'dd MMMM yyyy')}"></p>
+											</div>
+										</div>
+										<div th:unless="${#lists.isEmpty(Drink.drinkType)}">
+											<h4>Categories</h4>
+											<div class="saveSpace">
+												<p th:each="DrinkType : ${Drink.drinkType}">
+													<span th:text="${DrinkType.drinkTypeName}"> </span>
+												</p>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+
+						</div>
+					</div>
+				</section>
+			</div>
+			<div class="drinkCats">
+				<div class="letThereBeLight" id="chartdiv"></div>
+				<div class="letThereBeLight" th:id="DrinkTypes">
+					<h4>Categories:</h4>
+					<div class="saveSpace">
+						<p th:each="DrinkType : ${types}">
+							<span th:text="${DrinkType.drinkTypeName}"> </span>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input id="drinkCountryList" type="hidden"
+		th:value="${countryListString}" /><script type="text/javascript" src="/js/amcharts_5.2.29/amcharts5/index.js" th:src="@{/js/amcharts_5.2.29/amcharts5/index.js}"></script>
+<script type="text/javascript" src="/js/amcharts_5.2.29/amcharts5/map.js" th:src="@{/js/amcharts_5.2.29/amcharts5/map.js}"></script>
+<script type="text/javascript" src="/js/amcharts_5.2.29/amcharts5/worldLow.js" th:src="@{/js/amcharts_5.2.29/amcharts5/geodata/worldLow.js}"></script>
+<script type="text/javascript" src="/js/amcharts_5.2.29/amcharts5/themes/Animated.js" th:src="@{/js/amcharts_5.2.29/amcharts5/themes/Animated.js}"></script>
+<script type="text/javascript" src="/js/cozyCup.js" th:src="@{/js/cozyCup.js}"></script>
+</body>
+</html>
